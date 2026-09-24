@@ -147,7 +147,7 @@ th {
   border-bottom: 1.2px solid var(--tinta-muted); padding: 1.6mm 2mm 1.4mm 0;
   vertical-align: bottom;
 }
-td { border-bottom: 1px solid var(--linea); padding: 1.25mm 2mm 1.25mm 0; vertical-align: top; }
+td { border-bottom: 1px solid var(--linea); padding: 1mm 2mm 1mm 0; vertical-align: top; }
 td:first-child, th:first-child { padding-left: 0; }
 td code { font-size: 7.6pt; }
 .num td:not(:first-child), .num th:not(:first-child) { font-variant-numeric: tabular-nums; }

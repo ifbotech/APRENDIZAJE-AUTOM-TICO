@@ -33,10 +33,9 @@ Cada mes se registran desembarques pesqueros en los puertos del litoral marítim
 | --- | --- |
 | Documento PDF para subir a la tarea | [`docs/entrega_inicial/Entrega_Inicial_Grupo12.pdf`](docs/entrega_inicial/Entrega_Inicial_Grupo12.pdf) |
 | Diapositivas para la presentación de 5 minutos | [`docs/entrega_inicial/Presentacion_Entrega_Inicial_Grupo12.pdf`](docs/entrega_inicial/Presentacion_Entrega_Inicial_Grupo12.pdf) |
-| Texto fuente del documento (editable) | [`docs/entrega_inicial/entrega_inicial.md`](docs/entrega_inicial/entrega_inicial.md) |
+| Propuesta del grupo: texto fuente del documento (editable) | [`docs/propuesta_proyecto.md`](docs/propuesta_proyecto.md) |
 | Fuente de las diapositivas (editable) | [`docs/entrega_inicial/presentacion.html`](docs/entrega_inicial/presentacion.html) |
 | **Guía para la defensa** (explicación simple, ejemplos y preguntas probables) | [`docs/entrega_inicial/guia.md`](docs/entrega_inicial/guia.md) |
-| Propuesta original del grupo | [`docs/propuesta_proyecto.md`](docs/propuesta_proyecto.md) |
 | Perfilado del archivo 2019 | [`reports/perfilado_captura-puerto-flota-2019.md`](reports/perfilado_captura-puerto-flota-2019.md) |
 
 Lo que pide el enunciado y dónde está en el PDF:
@@ -44,10 +43,10 @@ Lo que pide el enunciado y dónde está en el PDF:
 | Requisito | Sección del PDF |
 | --- | --- |
 | Portada con nombre y apellido de los integrantes | Portada |
-| Descripción del contexto y del problema a resolver | 1. Contexto y problema |
-| Descripción del dataset: fuente, características y semántica de las variables | 2. Descripción del dataset |
-| Acceso al dataset original | 3. Acceso al dataset |
-| Propuesta de tareas de preprocesamiento y limpieza | 4. Propuesta de limpieza y preprocesamiento |
+| Descripción del contexto y del problema a resolver | Contexto y problema · Planteo del problema |
+| Descripción del dataset: fuente, características y semántica de las variables | Dataset · Variables principales |
+| Acceso al dataset original | Acceso al dataset |
+| Propuesta de tareas de preprocesamiento y limpieza | Limpieza y preprocesamiento · Qué se hará posteriormente |
 
 Fechas: el PDF se sube hasta el **24/09 a las 17 h** (lo sube un solo integrante). La presentación de 5 minutos es el 24 o el 25/09, en el turno que asigne la cátedra, con al menos un integrante presente. La devolución es en los encuentros del 1 y 2 de octubre.
 
@@ -74,12 +73,11 @@ Resumen del perfilado automático ([reporte completo](reports/perfilado_captura-
 │   ├── raw/captura-puerto-flota-2019.csv # copia sin modificar del archivo publicado
 │   └── referencias/coordenadas_puertos.csv  # una fila por puerto, para completar coordenadas
 ├── docs/
-│   ├── propuesta_proyecto.md             # propuesta original del grupo
+│   ├── propuesta_proyecto.md             # propuesta del grupo: fuente del PDF de la entrega
 │   ├── img/                              # logo y tabla de variables del portal
 │   └── entrega_inicial/
 │       ├── Entrega_Inicial_Grupo12.pdf
 │       ├── Presentacion_Entrega_Inicial_Grupo12.pdf
-│       ├── entrega_inicial.md            # fuente del PDF
 │       ├── presentacion.html             # fuente de las diapositivas
 │       ├── guia.md                       # guía para la defensa
 │       └── assets/                       # estilos, fuentes (OFL) y figuras
@@ -106,7 +104,7 @@ python src/perfilado.py data/raw/<archivo-2010-2018>.csv data/raw/captura-puerto
 # Tabla de coordenadas por puerto (conserva las coordenadas cargadas a mano)
 python src/coordenadas.py data/raw/captura-puerto-flota-2019.csv
 
-# Regenerar los PDF después de editar entrega_inicial.md o presentacion.html
+# Regenerar los PDF después de editar docs/propuesta_proyecto.md o presentacion.html
 python src/generar_pdf.py              # documento y diapositivas
 python src/generar_pdf.py documento    # solo el documento
 ```
@@ -116,7 +114,7 @@ python src/generar_pdf.py documento    # solo el documento
 ## Próximos pasos
 
 1. Descargar el archivo 2010–2018 en `data/raw/` y correr el perfilado y `src/coordenadas.py` sobre ambos archivos. Si aparece un puerto real sin coordenadas, buscarlas y anotarlas en `data/referencias/coordenadas_puertos.csv`.
-2. Si cambian los valores de 2010–2018, actualizar la tabla de la sección 2.2 de `entrega_inicial.md` y regenerar el PDF.
+2. Si cambian los valores de 2010–2018, actualizarlos en la sección «Dataset» de `docs/propuesta_proyecto.md` y regenerar el PDF.
 3. Contrastar los totales de captura con las planillas oficiales de desembarques del Ministerio.
 4. Análisis exploratorio y definición del criterio de anomalía.
 
