@@ -1,0 +1,168 @@
+/* Estilo de impresión (A4) para la entrega inicial. Lo usa src/generar_pdf.py. */
+
+@font-face { font-family: "Source Serif 4"; font-weight: 400; font-style: normal; src: url("fonts/source-serif-4-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Source Serif 4"; font-weight: 400; font-style: italic; src: url("fonts/source-serif-4-latin-400-italic.woff2") format("woff2"); }
+@font-face { font-family: "Source Serif 4"; font-weight: 600; font-style: normal; src: url("fonts/source-serif-4-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Source Serif 4"; font-weight: 600; font-style: italic; src: url("fonts/source-serif-4-latin-600-italic.woff2") format("woff2"); }
+@font-face { font-family: "Source Serif 4"; font-weight: 700; font-style: normal; src: url("fonts/source-serif-4-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 400; src: url("fonts/inter-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 500; src: url("fonts/inter-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("fonts/inter-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url("fonts/inter-latin-700-normal.woff2") format("woff2"); }
+
+:root {
+  --azul: #0157a4;          /* azul institucional UGR */
+  --azul-suave: #e8f0f9;
+  --tinta: #1b1b1a;
+  --tinta-2: #52514e;
+  --tinta-muted: #898781;
+  --linea: #dcdbd4;
+  --fondo: #ffffff;
+  --serif: "Source Serif 4", "Liberation Serif", Georgia, serif;
+  --sans: "Inter", "Liberation Sans", Arial, sans-serif;
+}
+
+@page {
+  size: A4;
+  margin: 22mm 21mm 20mm 21mm;
+  @bottom-left {
+    content: "Grupo 12 · Detección de anomalías en las capturas pesqueras argentinas";
+    font-family: "Inter", sans-serif; font-size: 7.5pt; color: #898781;
+  }
+  @bottom-right {
+    content: counter(page) " / " counter(pages);
+    font-family: "Inter", sans-serif; font-size: 7.5pt; color: #898781;
+  }
+}
+@page :first {
+  margin: 0;
+  @bottom-left { content: none; }
+  @bottom-right { content: none; }
+}
+
+* { box-sizing: border-box; }
+html { background: var(--fondo); }
+body {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 10.2pt;
+  line-height: 1.47;
+  color: var(--tinta);
+  background: var(--fondo);
+  hyphens: auto;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ---------------- Portada ---------------- */
+.portada {
+  height: 297mm;
+  display: flex;
+  flex-direction: column;
+  padding: 26mm 24mm 22mm 24mm;
+  break-after: page;
+  position: relative;
+}
+.portada::before {             /* franja institucional */
+  content: "";
+  position: absolute; left: 0; top: 0; bottom: 0; width: 7mm;
+  background: var(--azul);
+}
+.portada .logo { width: 30mm; height: auto; }
+.portada .institucion {
+  font-family: var(--sans); font-size: 9.5pt; letter-spacing: 0.02em; color: var(--tinta-2);
+  margin-top: 6mm; line-height: 1.45;
+}
+.portada .institucion strong { color: var(--tinta); font-weight: 600; }
+.portada .centro { margin-top: auto; margin-bottom: auto; padding-top: 10mm; }
+.portada .etiqueta {
+  font-family: var(--sans); font-size: 9pt; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--azul); margin: 0 0 5mm 0;
+}
+.portada h1 {
+  font-family: var(--sans); font-weight: 700; font-size: 27pt; line-height: 1.12;
+  letter-spacing: -0.015em; margin: 0; color: var(--tinta); hyphens: none;
+}
+.portada .bajada {
+  font-family: var(--serif); font-size: 13pt; color: var(--tinta-2); margin: 6mm 0 0 0; line-height: 1.4;
+  max-width: 140mm; text-align: left; hyphens: none;
+}
+.portada p { text-align: left; hyphens: none; }
+.portada .equipo {
+  border-top: 1px solid var(--linea); padding-top: 6mm;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6mm;
+  font-family: var(--sans); font-size: 9.5pt; color: var(--tinta-2);
+}
+.portada .equipo h2 {
+  font-family: var(--sans); font-size: 8pt; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--tinta-muted); margin: 0 0 2.5mm 0; border: 0; padding: 0;
+}
+.portada .equipo ul { list-style: none; margin: 0; padding: 0; }
+.portada .equipo li { margin: 0 0 1.4mm 0; color: var(--tinta); font-size: 10.5pt; }
+.portada .equipo p { margin: 0 0 1.4mm 0; }
+.portada .equipo .grupo { font-size: 15pt; font-weight: 700; color: var(--azul); margin-bottom: 3mm; }
+
+/* ---------------- Cuerpo ---------------- */
+h2, h3, h4 { font-family: var(--sans); color: var(--tinta); hyphens: none; break-after: avoid; }
+h2 {
+  font-size: 15pt; font-weight: 700; letter-spacing: -0.01em;
+  margin: 9mm 0 3mm 0; padding-bottom: 1.6mm; border-bottom: 1.5px solid var(--azul);
+}
+h2:first-of-type { margin-top: 0; }
+h3 { font-size: 11.2pt; font-weight: 600; margin: 6mm 0 1.8mm 0; color: var(--azul); }
+h4 { font-size: 10pt; font-weight: 600; margin: 4mm 0 1mm 0; }
+p { margin: 0 0 2.6mm 0; text-align: justify; orphans: 3; widows: 3; }
+ul, ol { margin: 0 0 3mm 0; padding-left: 5.5mm; }
+li { margin-bottom: 1mm; }
+.enlaces li { break-inside: avoid; }
+.notas-cat { font-size: 9.2pt; line-height: 1.42; }
+.notas-cat li { margin-bottom: 0.6mm; }
+.notas-cat p { margin-bottom: 1.5mm; }
+li > p { margin-bottom: 1mm; }
+strong { font-weight: 600; }
+a { color: var(--azul); text-decoration: none; word-break: break-all; }
+code {
+  font-family: "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 8.6pt;
+  background: #f3f3f0; padding: 0.2mm 1mm; border-radius: 1mm; hyphens: none;
+}
+hr { border: 0; border-top: 1px solid var(--linea); margin: 5mm 0; }
+
+.destacado {
+  border-left: 3px solid var(--azul); background: var(--azul-suave);
+  padding: 3mm 4.5mm; margin: 3.5mm 0 4mm 0; break-inside: avoid;
+}
+.destacado p:last-child { margin-bottom: 0; }
+.nota { font-family: var(--sans); font-size: 8.4pt; color: var(--tinta-2); line-height: 1.45; }
+.nota p { text-align: left; }
+
+/* Tablas */
+table {
+  width: 100%; border-collapse: collapse; margin: 2mm 0 4mm 0;
+  font-family: var(--sans); font-size: 8.3pt; line-height: 1.35; break-inside: auto;
+}
+thead { display: table-header-group; }
+tr { break-inside: avoid; }
+th {
+  text-align: left; font-weight: 600; color: var(--tinta-2); font-size: 7.8pt;
+  border-bottom: 1.2px solid var(--tinta-muted); padding: 1.6mm 2mm 1.4mm 0;
+  vertical-align: bottom;
+}
+td { border-bottom: 1px solid var(--linea); padding: 1.25mm 2mm 1.25mm 0; vertical-align: top; }
+td:first-child, th:first-child { padding-left: 0; }
+td code { font-size: 7.6pt; }
+.num td:not(:first-child), .num th:not(:first-child) { font-variant-numeric: tabular-nums; }
+.compacta td, .compacta th { padding-top: 1.1mm; padding-bottom: 1.1mm; }
+.kv thead { display: none; }
+.kv td:first-child { width: 34mm; font-weight: 600; color: var(--tinta-2); }
+.kv tr:first-child td { border-top: 1.2px solid var(--tinta-muted); }
+
+/* Figuras */
+figure { margin: 3mm 0 5mm 0; break-inside: avoid; }
+figure img { width: 88%; height: auto; display: block; margin: 0 auto; }
+figcaption {
+  font-family: var(--sans); font-size: 8.2pt; color: var(--tinta-2); line-height: 1.45; margin: 1.5mm auto 0 auto; width: 88%;
+}
+figcaption strong { color: var(--tinta); }
+
+.salto { break-before: page; }
+.sin-salto { break-inside: avoid; }

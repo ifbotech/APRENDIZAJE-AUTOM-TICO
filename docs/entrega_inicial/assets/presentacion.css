@@ -1,0 +1,146 @@
+/* Diapositivas 16:9 (1280 x 720 px) para la presentación de 5 minutos. */
+
+@font-face { font-family: "Inter"; font-weight: 400; src: url("fonts/inter-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 500; src: url("fonts/inter-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("fonts/inter-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url("fonts/inter-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Source Serif 4"; font-weight: 400; font-style: normal; src: url("fonts/source-serif-4-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Source Serif 4"; font-weight: 600; font-style: normal; src: url("fonts/source-serif-4-latin-600-normal.woff2") format("woff2"); }
+
+:root {
+  --azul: #0157a4;
+  --azul-suave: #eef3fa;
+  --tinta: #1b1b1a;
+  --tinta-2: #52514e;
+  --tinta-muted: #898781;
+  --linea: #dcdbd4;
+  --fondo: #ffffff;
+}
+
+@page { size: 1280px 720px; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--fondo); }
+body {
+  font-family: "Inter", "Liberation Sans", Arial, sans-serif; color: var(--tinta);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+
+.slide {
+  width: 1280px; height: 720px; position: relative; overflow: hidden;
+  padding: 58px 84px 70px 84px; display: flex; flex-direction: column;
+  break-after: page; background: var(--fondo);
+}
+.slide:last-child { break-after: auto; }
+.slide::after {                 /* pie: grupo y número de diapositiva */
+  content: attr(data-pie);
+  position: absolute; left: 84px; right: 84px; bottom: 26px;
+  font-size: 13px; color: var(--tinta-muted); letter-spacing: 0.01em;
+}
+.num {
+  position: absolute; right: 84px; bottom: 26px; font-size: 13px; color: var(--tinta-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.kicker {
+  font-size: 15px; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: var(--azul);
+  margin: 0;
+}
+h2 {
+  font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.13;
+  margin: 12px 0 30px 0; max-width: 1060px;
+}
+p, li { font-size: 21px; line-height: 1.42; margin: 0; }
+ul { margin: 0; padding-left: 26px; }
+li { margin-bottom: 10px; }
+li::marker { color: var(--azul); }
+.muted { color: var(--tinta-2); }
+.chico { font-size: 16px; line-height: 1.45; }
+code {
+  font-family: "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 0.86em;
+  background: #f1f1ee; border-radius: 5px; padding: 1px 6px;
+}
+
+/* Portada */
+.portada { padding: 64px 90px 60px 110px; }
+.portada::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 22px; background: var(--azul); }
+.portada::after { content: none; }
+.portada .cabecera { display: flex; align-items: center; gap: 22px; }
+.portada .cabecera img { width: 92px; height: auto; }
+.portada .cabecera p { font-size: 18px; line-height: 1.4; color: var(--tinta-2); }
+.portada .cabecera strong { color: var(--tinta); font-weight: 600; }
+.portada .titulo { margin-top: auto; margin-bottom: auto; }
+.portada h1 {
+  font-size: 58px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.06; margin: 16px 0 0 0; max-width: 980px;
+}
+.portada .pie-portada {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  border-top: 1px solid var(--linea); padding-top: 22px;
+}
+.portada .grupo { font-size: 26px; font-weight: 700; color: var(--azul); margin-bottom: 8px; }
+.portada .integrantes { font-size: 19px; color: var(--tinta); }
+.portada .fecha { font-size: 17px; color: var(--tinta-2); text-align: right; white-space: nowrap; }
+
+/* Columnas */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; flex: 1; }
+.cols-60 { display: grid; grid-template-columns: 1.25fr 1fr; gap: 52px; flex: 1; }
+.caja {
+  background: var(--azul-suave); border-radius: 14px; padding: 26px 30px;
+}
+.caja h3 { font-size: 17px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--azul); margin: 0 0 14px 0; }
+.caja li { font-size: 19px; margin-bottom: 9px; }
+
+/* Enunciado destacado */
+.enunciado {
+  font-family: "Source Serif 4", Georgia, serif; font-size: 29px; line-height: 1.38; font-weight: 600;
+  border-left: 5px solid var(--azul); padding: 4px 0 4px 26px; margin: 0 0 30px 0; max-width: 1060px;
+}
+.clases { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.clase { border: 1px solid var(--linea); border-radius: 14px; padding: 20px 24px; }
+.clase .nombre { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.clase .nombre span { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; vertical-align: 2px; }
+.clase p { font-size: 18px; color: var(--tinta-2); }
+.nota-inferior { margin-top: 34px; font-size: 18px; color: var(--tinta-2); }
+.nota-inferior strong { color: var(--tinta); }
+
+/* Indicadores */
+.tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 22px; margin-bottom: 34px; }
+.tile { border-top: 3px solid var(--azul); padding-top: 14px; }
+.tile .valor { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; }
+.tile .rotulo { font-size: 15.5px; color: var(--tinta-2); margin-top: 8px; line-height: 1.35; }
+.fila-ejemplo {
+  font-family: "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 16px; color: var(--tinta);
+  background: #f5f5f2; border-radius: 10px; padding: 14px 18px; margin-top: 14px; line-height: 1.5;
+}
+.fila-ejemplo .k { color: var(--tinta-muted); }
+.acceso { margin-top: auto; }
+.acceso strong { color: var(--tinta); }
+
+/* Variables agrupadas */
+.variables { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; flex: 1; }
+.grupo-var { border-top: 3px solid var(--azul); padding-top: 14px; }
+.grupo-var h3 { font-size: 24px; font-weight: 700; margin: 0 0 12px 0; }
+.grupo-var .var { font-size: 16.5px; margin-bottom: 10px; line-height: 1.35; color: var(--tinta-2); }
+.grupo-var .var code { font-size: 14.5px; display: inline-block; margin-bottom: 3px; color: var(--tinta); }
+.grupo-var .var.clave code { background: var(--azul); color: #fff; }
+
+/* Hallazgos */
+.hallazgos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 24px; }
+.hallazgo { background: #f5f5f2; border-radius: 14px; padding: 20px 22px; }
+.hallazgo .tema { font-size: 13.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tinta-muted); margin-bottom: 8px; }
+.hallazgo .dato { font-size: 27px; font-weight: 700; letter-spacing: -0.015em; color: var(--azul); line-height: 1.12; margin-bottom: 8px; }
+.hallazgo p { font-size: 16.5px; line-height: 1.4; color: var(--tinta-2); }
+
+/* Tareas */
+.tareas { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 40px; counter-reset: tarea; }
+.tarea { display: grid; grid-template-columns: 40px 1fr; align-items: start; }
+.tarea::before {
+  counter-increment: tarea; content: counter(tarea);
+  width: 30px; height: 30px; border-radius: 50%; background: var(--azul); color: #fff;
+  font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 2px;
+}
+.tarea .t { font-size: 19px; font-weight: 700; }
+.tarea p { font-size: 16.5px; line-height: 1.38; color: var(--tinta-2); }
+.siguiente {
+  margin-top: auto; background: var(--azul); color: #fff; border-radius: 12px; padding: 16px 22px; font-size: 18px;
+}
+.siguiente strong { font-weight: 700; }

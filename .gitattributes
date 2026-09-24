@@ -1,0 +1,6 @@
+# Los CSV se guardan tal como se publicaron (Latin-1, CRLF): git no debe tocarlos.
+*.csv -text
+*.pdf binary
+*.png binary
+*.woff2 binary
+*.ttf binary

@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Presentación · Entrega inicial · Grupo 12</title>
+<link rel="stylesheet" href="assets/presentacion.css">
+</head>
+<body>
+
+<!-- 1. Portada -->
+<section class="slide portada">
+  <div class="cabecera">
+    <img src="../img/logo_ugr.png" alt="Universidad del Gran Rosario">
+    <p><strong>Universidad del Gran Rosario</strong><br>Aprendizaje Automático · Trabajo Práctico Grupal 2026</p>
+  </div>
+  <div class="titulo">
+    <p class="kicker">Entrega inicial</p>
+    <h1>Detección de anomalías en las capturas pesqueras argentinas</h1>
+  </div>
+  <div class="pie-portada">
+    <div>
+      <div class="grupo">Grupo 12</div>
+      <div class="integrantes">Alejandro Matias Bernal · Sebastian Pablo Paredes<br>David Ezequiel Rodrigues · Iñaki Francisco Barnetche</div>
+    </div>
+    <div class="fecha">24 de septiembre de 2026</div>
+  </div>
+</section>
+
+<!-- 2. Contexto -->
+<section class="slide" data-pie="Grupo 12 · Detección de anomalías en las capturas pesqueras argentinas">
+  <p class="kicker">1 · Contexto</p>
+  <h2>Lo habitual para una especie en un puerto puede ser excepcional para otra</h2>
+  <div class="cols-60">
+    <ul>
+      <li>Cada mes se registran desembarques en los puertos del litoral marítimo, con especies, flotas y volúmenes muy distintos.</li>
+      <li>Las capturas varían según la especie, el puerto, el tipo de flota y el momento del año.</li>
+      <li>Por eso una captura alta o baja no indica, por sí sola, que haya pasado algo fuera de lo normal.</li>
+    </ul>
+    <div class="caja">
+      <h3>¿Para qué anticipar un desvío?</h3>
+      <ul>
+        <li>Alertar sobre caídas inesperadas de una especie.</li>
+        <li>Detectar cambios en la actividad de los puertos.</li>
+        <li>Planificar producción, almacenamiento y transporte.</li>
+        <li>Identificar registros que podrían ser incorrectos.</li>
+        <li>Orientar investigaciones sobre presión pesquera o cambios ambientales.</li>
+      </ul>
+    </div>
+  </div>
+  <span class="num">2</span>
+</section>
+
+<!-- 3. Problema -->
+<section class="slide" data-pie="Grupo 12 · Detección de anomalías en las capturas pesqueras argentinas">
+  <p class="kicker">2 · Planteo del problema</p>
+  <h2>Clasificación binaria en lugar de regresión</h2>
+  <p class="enunciado">Para cada combinación de especie y puerto, y usando solo la información disponible hasta el mes t − 1, predecir si la captura del mes t será normal o anómala.</p>
+  <div class="clases">
+    <div class="clase">
+      <div class="nombre"><span style="background:#0157a4"></span>Normal</div>
+      <p>La captura está dentro de lo esperable para esa especie, ese puerto y esa época del año.</p>
+    </div>
+    <div class="clase">
+      <div class="nombre"><span style="background:#eb6834"></span>Anómala</div>
+      <p>La captura se aparta de manera marcada del comportamiento histórico, por una caída o por un aumento.</p>
+    </div>
+  </div>
+  <p class="nota-inferior"><strong>La etiqueta no existe en el dataset:</strong> la vamos a construir a partir del comportamiento histórico. El criterio se define después del análisis exploratorio.</p>
+  <span class="num">3</span>
+</section>
+
+<!-- 4. Dataset -->
+<section class="slide" data-pie="Fuente: Ministerio de Agricultura, Ganadería y Pesca · datos.magyp.gob.ar › Pesca marítima › Desembarques">
+  <p class="kicker">3 · Dataset</p>
+  <h2>Desembarques de pesca marítima publicados como datos abiertos</h2>
+  <div class="tiles">
+    <div class="tile"><div class="valor">41.340</div><div class="rotulo">registros aprox.<br>ene 2010 – dic 2018</div></div>
+    <div class="tile"><div class="valor">3.040</div><div class="rotulo">registros 2019<br>ene – nov</div></div>
+    <div class="tile"><div class="valor">13</div><div class="rotulo">variables en<br>ambos archivos</div></div>
+    <div class="tile"><div class="valor">23</div><div class="rotulo">puertos en<br>6 provincias</div></div>
+    <div class="tile"><div class="valor">89</div><div class="rotulo">especies, 16 agrupaciones<br>y 8 tipos de flota</div></div>
+  </div>
+  <p><strong>Cada fila</strong> es la captura desembarcada, en kilogramos, de una especie, por un tipo de flota, en un puerto y en un mes. Solo hay filas cuando hubo captura.</p>
+  <div class="fila-ejemplo"><span class="k">fecha</span> 2019-01 · <span class="k">flota</span> Rada o ría · <span class="k">puerto</span> Bahía Blanca · <span class="k">especie</span> Camarón · <span class="k">captura</span> 221.363 kg</div>
+  <p class="chico muted acceso"><strong>Acceso:</strong> datos.magyp.gob.ar/dataset/http-www-magyp-gob-ar-sitio-areas-pesca-maritima-desembarques<br>Archivo principal 2010–2018 y archivo 2019 (<code>captura-puerto-flota-2019.csv</code>) en la misma página.</p>
+  <span class="num">4</span>
+</section>
+
+<!-- 5. Variables -->
+<section class="slide" data-pie="En azul, las variables que más vamos a utilizar en una primera etapa.">
+  <p class="kicker">3 · Dataset</p>
+  <h2>13 variables: cuándo, dónde, quién, qué y cuánto</h2>
+  <div class="variables">
+    <div class="grupo-var">
+      <h3>Cuándo</h3>
+      <div class="var clave"><code>fecha</code><br>Mes y año (año-mes).</div>
+    </div>
+    <div class="grupo-var">
+      <h3>Dónde</h3>
+      <div class="var clave"><code>puerto</code><br>Puerto de desembarque.</div>
+      <div class="var"><code>provincia</code> <code>provincia_id</code><br>Provincia y su código.</div>
+      <div class="var"><code>departamento</code> <code>departamento_id</code><br>Departamento y su código.</div>
+      <div class="var"><code>latitud</code> <code>longitud</code><br>Ubicación del puerto.</div>
+    </div>
+    <div class="grupo-var">
+      <h3>Quién</h3>
+      <div class="var clave"><code>flota</code><br>Tipo de flota: rada o ría, costeros, fresqueros y congeladores (arrastreros, tangoneros, poteros, trampas, palangreros).</div>
+    </div>
+    <div class="grupo-var">
+      <h3>Qué</h3>
+      <div class="var"><code>categoria</code><br>Peces, crustáceos o moluscos.</div>
+      <div class="var clave"><code>especie</code><br>Especie capturada.</div>
+      <div class="var clave"><code>especie_agrupada</code><br>Agrupación: p. ej. Merluza hubbsi S41, Variado costero, otras especies.</div>
+    </div>
+    <div class="grupo-var">
+      <h3>Cuánto</h3>
+      <div class="var clave"><code>captura</code><br>Kilos desembarcados (entero).</div>
+    </div>
+  </div>
+  <span class="num">5</span>
+</section>
+
+<!-- 6. Primera revisión -->
+<section class="slide" data-pie="Perfilado automático del archivo 2019 (src/perfilado.py). El mismo perfilado se aplicará a 2010–2018.">
+  <p class="kicker">4 · Primera revisión de los datos</p>
+  <h2>Qué encontramos al perfilar el archivo 2019</h2>
+  <div class="hallazgos">
+    <div class="hallazgo">
+      <div class="tema">Coordenadas</div>
+      <div class="dato">216 registros sin latitud ni longitud</div>
+      <p>Todos de «otros puertos Buenos Aires», que no tiene coordenadas en ningún registro.</p>
+    </div>
+    <div class="hallazgo">
+      <div class="tema">Duplicados</div>
+      <div class="dato">0 filas idénticas</div>
+      <p>392 filas coinciden en fecha, flota, puerto y especie pero difieren en la agrupación.</p>
+    </div>
+    <div class="hallazgo">
+      <div class="tema">Fecha</div>
+      <div class="dato">Noviembre: 94 registros</div>
+      <p>El resto de los meses tiene entre 246 y 347. Diciembre no figura.</p>
+    </div>
+    <div class="hallazgo">
+      <div class="tema">Meses sin registro</div>
+      <div class="dato">61 % de las series con 5 meses o menos</div>
+      <p>No hay capturas en cero: si no hubo desembarque, la fila no existe.</p>
+    </div>
+    <div class="hallazgo">
+      <div class="tema">Escala de la captura</div>
+      <div class="dato">De 1 kg a 18,6 millones de kg</div>
+      <p>Mediana de 2.680 kg y media de 223.264 kg: muy asimétrica.</p>
+    </div>
+    <div class="hallazgo">
+      <div class="tema">Consistencia</div>
+      <div class="dato">Valores a contrastar</div>
+      <p>P. ej. 9,57 millones de kg de centolla en Caleta Olivia / Paula en abril de 2019.</p>
+    </div>
+  </div>
+  <span class="num">6</span>
+</section>
+
+<!-- 7. Limpieza -->
+<section class="slide" data-pie="Grupo 12 · Detección de anomalías en las capturas pesqueras argentinas">
+  <p class="kicker">5 · Limpieza y preprocesamiento</p>
+  <h2>Tareas propuestas</h2>
+  <div class="tareas">
+    <div class="tarea"><div><div class="t">Lectura y unificación</div><p>Codificación Latin-1, códigos como texto, unir 2010–2018 y 2019, unificar nombres.</p></div></div>
+    <div class="tarea"><div><div class="t">Coordenadas faltantes</div><p>Completar desde el mismo puerto si es posible; si no, no usar latitud y longitud.</p></div></div>
+    <div class="tarea"><div><div class="t">Duplicados</div><p>Revisar con la clave completa; sumar (no eliminar) las filas por agrupación.</p></div></div>
+    <div class="tarea"><div><div class="t">Fecha</div><p>Separar año y mes; verificar meses incompletos.</p></div></div>
+    <div class="tarea"><div><div class="t">Períodos sin registros</div><p>Definir cómo representar los meses sin fila y qué series tienen historia suficiente.</p></div></div>
+    <div class="tarea"><div><div class="t">Captura</div><p>Extremos por especie y puerto, en escala logarítmica; contrastar con las planillas oficiales.</p></div></div>
+    <div class="tarea"><div><div class="t">Agregación</div><p>Llevar los datos a especie – puerto – mes.</p></div></div>
+    <div class="tarea"><div><div class="t">Etiqueta</div><p>Construirla a partir del histórico, después del análisis exploratorio.</p></div></div>
+  </div>
+  <div class="siguiente"><strong>Próximo paso:</strong> aplicar el perfilado a 2010–2018, limpiar, explorar y definir el criterio de anomalía.</div>
+  <span class="num">7</span>
+</section>
+
+</body>
+</html>
