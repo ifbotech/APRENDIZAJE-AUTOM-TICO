@@ -14,6 +14,16 @@ Desembarques de pesca marítima por puerto, flota y especie publicados por el Mi
 
 Los archivos en `raw/` no se editan: la limpieza se hace por código y los resultados van a otra carpeta.
 
+## Tabla de coordenadas en `referencias/`
+
+`referencias/coordenadas_puertos.csv` tiene una fila por puerto con su latitud, longitud y la fuente del dato. La arma `src/coordenadas.py` a partir de las coordenadas que ya trae el dataset (cada puerto tiene siempre el mismo par):
+
+```bash
+python src/coordenadas.py data/raw/captura-puerto-flota-2019.csv [otro.csv ...]
+```
+
+Si un puerto real queda sin coordenadas, se buscan a mano (por ejemplo en Google Maps u OpenStreetMap) y se anotan en la tabla con la fuente en la columna `fuente`. Al volver a correr el script, esos valores se conservan. «otros puertos Buenos Aires» queda en blanco porque agrupa varios puertos y no tiene una ubicación única.
+
 ## Cómo leer los CSV
 
 - Codificación: el archivo 2019 está en **Latin-1 (ISO-8859-1)** con fin de línea CRLF. Leído como UTF-8, los acentos se rompen.

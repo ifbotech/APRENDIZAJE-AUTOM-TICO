@@ -35,6 +35,7 @@ Cada mes se registran desembarques pesqueros en los puertos del litoral marítim
 | Diapositivas para la presentación de 5 minutos | [`docs/entrega_inicial/Presentacion_Entrega_Inicial_Grupo12.pdf`](docs/entrega_inicial/Presentacion_Entrega_Inicial_Grupo12.pdf) |
 | Texto fuente del documento (editable) | [`docs/entrega_inicial/entrega_inicial.md`](docs/entrega_inicial/entrega_inicial.md) |
 | Fuente de las diapositivas (editable) | [`docs/entrega_inicial/presentacion.html`](docs/entrega_inicial/presentacion.html) |
+| **Guía para la defensa** (explicación simple, ejemplos y preguntas probables) | [`docs/entrega_inicial/guia.md`](docs/entrega_inicial/guia.md) |
 | Propuesta original del grupo | [`docs/propuesta_proyecto.md`](docs/propuesta_proyecto.md) |
 | Perfilado del archivo 2019 | [`reports/perfilado_captura-puerto-flota-2019.md`](reports/perfilado_captura-puerto-flota-2019.md) |
 
@@ -70,7 +71,8 @@ Resumen del perfilado automático ([reporte completo](reports/perfilado_captura-
 .
 ├── data/
 │   ├── README.md                         # origen de los datos y cómo agregar el archivo 2010–2018
-│   └── raw/captura-puerto-flota-2019.csv # copia sin modificar del archivo publicado
+│   ├── raw/captura-puerto-flota-2019.csv # copia sin modificar del archivo publicado
+│   └── referencias/coordenadas_puertos.csv  # una fila por puerto, para completar coordenadas
 ├── docs/
 │   ├── propuesta_proyecto.md             # propuesta original del grupo
 │   ├── img/                              # logo y tabla de variables del portal
@@ -79,11 +81,13 @@ Resumen del perfilado automático ([reporte completo](reports/perfilado_captura-
 │       ├── Presentacion_Entrega_Inicial_Grupo12.pdf
 │       ├── entrega_inicial.md            # fuente del PDF
 │       ├── presentacion.html             # fuente de las diapositivas
+│       ├── guia.md                       # guía para la defensa
 │       └── assets/                       # estilos, fuentes (OFL) y figuras
 ├── reports/
 │   └── perfilado_captura-puerto-flota-2019.md
 ├── src/
 │   ├── perfilado.py                      # perfilado de los CSV y figuras
+│   ├── coordenadas.py                    # tabla de coordenadas por puerto y completado
 │   └── generar_pdf.py                    # genera los PDF con Chrome/Chromium/Edge
 └── requirements.txt
 ```
@@ -99,6 +103,9 @@ python src/perfilado.py data/raw/captura-puerto-flota-2019.csv
 # Con el archivo 2010–2018 descargado en data/raw/ (el reporte del último archivo compara categorías con el anterior)
 python src/perfilado.py data/raw/<archivo-2010-2018>.csv data/raw/captura-puerto-flota-2019.csv
 
+# Tabla de coordenadas por puerto (conserva las coordenadas cargadas a mano)
+python src/coordenadas.py data/raw/captura-puerto-flota-2019.csv
+
 # Regenerar los PDF después de editar entrega_inicial.md o presentacion.html
 python src/generar_pdf.py              # documento y diapositivas
 python src/generar_pdf.py documento    # solo el documento
@@ -108,7 +115,7 @@ python src/generar_pdf.py documento    # solo el documento
 
 ## Próximos pasos
 
-1. Descargar el archivo 2010–2018 en `data/raw/` y correr el perfilado sobre ambos archivos.
+1. Descargar el archivo 2010–2018 en `data/raw/` y correr el perfilado y `src/coordenadas.py` sobre ambos archivos. Si aparece un puerto real sin coordenadas, buscarlas y anotarlas en `data/referencias/coordenadas_puertos.csv`.
 2. Si cambian los valores de 2010–2018, actualizar la tabla de la sección 2.2 de `entrega_inicial.md` y regenerar el PDF.
 3. Contrastar los totales de captura con las planillas oficiales de desembarques del Ministerio.
 4. Análisis exploratorio y definición del criterio de anomalía.
