@@ -74,6 +74,7 @@ Resumen del perfilado automático ([reporte completo](reports/perfilado_captura-
 │   └── referencias/coordenadas_puertos.csv  # una fila por puerto, para completar coordenadas
 ├── docs/
 │   ├── propuesta_proyecto.md             # propuesta del grupo: fuente del PDF de la entrega
+│   ├── recomendaciones_y_plan_eda.md     # devolución, preguntas para la cátedra y plan del EDA
 │   ├── img/                              # logo y tabla de variables del portal
 │   └── entrega_inicial/
 │       ├── Entrega_Inicial_Grupo12.pdf
@@ -112,6 +113,8 @@ python src/generar_pdf.py documento    # solo el documento
 `generar_pdf.py` usa Google Chrome, Chromium o Microsoft Edge en modo headless. Si no encuentra el navegador, indicá la ruta con la variable de entorno `CHROME`.
 
 ## Próximos pasos
+
+Recomendaciones después de la devolución de la entrega inicial, preguntas para las profesoras y plan del EDA: [`docs/recomendaciones_y_plan_eda.md`](docs/recomendaciones_y_plan_eda.md).
 
 1. Descargar el archivo 2010–2018 en `data/raw/` y correr el perfilado y `src/coordenadas.py` sobre ambos archivos. Si aparece un puerto real sin coordenadas, buscarlas y anotarlas en `data/referencias/coordenadas_puertos.csv`.
 2. Si cambian los valores de 2010–2018, actualizarlos en la sección «Dataset» de `docs/propuesta_proyecto.md` y regenerar el PDF.
