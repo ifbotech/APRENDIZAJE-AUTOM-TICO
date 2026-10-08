@@ -75,6 +75,7 @@ Resumen del perfilado automático ([reporte completo](reports/perfilado_captura-
 ├── docs/
 │   ├── propuesta_proyecto.md             # propuesta del grupo: fuente del PDF de la entrega
 │   ├── recomendaciones_y_plan_eda.md     # devolución, preguntas para la cátedra y plan del EDA
+│   ├── revision_eda.md                   # revisión del notebook del EDA
 │   ├── img/                              # logo y tabla de variables del portal
 │   └── entrega_inicial/
 │       ├── Entrega_Inicial_Grupo12.pdf
@@ -82,6 +83,7 @@ Resumen del perfilado automático ([reporte completo](reports/perfilado_captura-
 │       ├── presentacion.html             # fuente de las diapositivas
 │       ├── guia.md                       # guía para la defensa
 │       └── assets/                       # estilos, fuentes (OFL) y figuras
+├── Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb  # notebook del EDA del grupo
 ├── reports/
 │   └── perfilado_captura-puerto-flota-2019.md
 ├── src/
@@ -115,6 +117,8 @@ python src/generar_pdf.py documento    # solo el documento
 ## Próximos pasos
 
 Recomendaciones después de la devolución de la entrega inicial, preguntas para las profesoras y plan del EDA: [`docs/recomendaciones_y_plan_eda.md`](docs/recomendaciones_y_plan_eda.md).
+
+Revisión del notebook del EDA del grupo ([`Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb`](Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb)), con hallazgos, correcciones y código de diagnóstico: [`docs/revision_eda.md`](docs/revision_eda.md).
 
 1. Descargar el archivo 2010–2018 en `data/raw/` y correr el perfilado y `src/coordenadas.py` sobre ambos archivos. Si aparece un puerto real sin coordenadas, buscarlas y anotarlas en `data/referencias/coordenadas_puertos.csv`.
 2. Si cambian los valores de 2010–2018, actualizarlos en la sección «Dataset» de `docs/propuesta_proyecto.md` y regenerar el PDF.
