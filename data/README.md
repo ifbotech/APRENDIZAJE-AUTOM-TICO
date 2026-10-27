@@ -15,7 +15,7 @@ Todos los archivos de esta carpeta los descarga o los genera la notebook `Grupo_
 | Grupo de columnas | Columnas |
 | --- | --- |
 | Identificación | `especie`, `categoria`, `fecha`, `anio`, `mes` |
-| Objetivo y su construcción | `captura_t`, `y` = log1p(captura_t), `esperado`, `residuo`, `escala`, `z`, `clase` (`caida` / `normal` / `aumento`), `clase_cod` (−1 / 0 / 1) |
+| Objetivo y su construcción | `captura_t`, `esperado` (mediana del mismo mes en años anteriores), `nivel` (promedio de los 12 meses anteriores), `residuo`, `desvio` = residuo / nivel, `q1`, `q3`, `ric` (cuartiles de los desvíos de 24 meses), `puntaje` (RIC fuera de la caja), `clase` (`caida` / `normal` / `aumento`), `clase_cod` (−1 / 0 / 1) |
 | Variables candidatas | ver la tabla de la sección 4.8.1 de la notebook; el modelo usa 24 columnas (diccionario de la sección 7, con el rol de cada variable) |
 
 Todas las variables candidatas usan solo información disponible hasta el mes anterior.

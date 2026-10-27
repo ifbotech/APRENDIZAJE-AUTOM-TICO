@@ -25,7 +25,7 @@ La notebook se entrega ya ejecutada. En Colab corre sin archivos previos: descar
 
 **Problema.** Para cada especie y cada mes, usando solo la información disponible hasta el mes anterior, anticipar si el desembarque será una **caída anómala**, **normal** o un **aumento anómalo** respecto de lo habitual para esa especie en ese mes del año. Es una clasificación supervisada de tres clases.
 
-**Etiqueta.** Se compara el desembarque en escala logarítmica con la mediana del mismo mes en los años anteriores y se divide por una escala robusta (MAD de los 24 meses previos). El puntaje *z* resultante define la clase: `caida` si *z* < −2,5, `aumento` si *z* > 2,5 y `normal` en otro caso.
+**Etiqueta.** Se construye solo con herramientas vistas en clase. Cada mes se compara con la mediana del mismo mes en años anteriores, la diferencia se mide en proporción del nivel habitual de la especie (promedio de los 12 meses anteriores) y se aplica la regla del diagrama de caja sobre los desvíos de los 24 meses anteriores: `caida` si el desvío queda por debajo de $Q_1 - 1{,}5 \cdot \text{RIC}$, `aumento` si queda por encima de $Q_3 + 1{,}5 \cdot \text{RIC}$ y `normal` en otro caso.
 
 **Datos.**
 
@@ -41,33 +41,33 @@ La notebook se entrega ya ejecutada. En Colab corre sin archivos previos: descar
 
 Por eso el modelo usa las estadísticas oficiales del mismo organismo.
 
-**Modelo.** Un único bosque aleatorio con 24 columnas elegidas en dos pasos, solo con técnicas vistas en clase:
+**Modelo.** Un único bosque aleatorio con 30 columnas elegidas en dos pasos, solo con técnicas vistas en clase:
 
-1. **Filtro** (Unidad 1, dentro del EDA): ANOVA de un factor para las numéricas, χ² para las categóricas (con control de frecuencias esperadas) y correlación de Pearson para la redundancia.
-2. **Envoltura** (Unidad 1): eliminación hacia atrás por familias de variables, con validación temporal por años. Confirma las 24 columnas del filtro.
+1. **Filtro** (Unidad 1, dentro del EDA): ANOVA de un factor para las numéricas, χ² para las categóricas (con control de frecuencias esperadas) y correlación de Pearson para la redundancia. Deja 33 columnas.
+2. **Envoltura** (Unidad 1): eliminación hacia atrás por familias de variables, con validación temporal por años. Quita el clima y el contexto nacional, que no mejoran el modelo.
 
 El método **integrado** (importancia del bosque aleatorio) se usa para interpretar el modelo.
 
-Las variables del modelo son la historia de la especie, la historia de sus anomalías, la geografía y la flota (calculadas con la latitud y la longitud de los puertos), la clase del mes anterior y la tipología de pesquerías obtenida con K-Means.
+Las variables del modelo son la historia de la especie, la historia de sus anomalías, la cantidad de puertos de desembarque, la clase del mes anterior, el mes del año y la tipología de pesquerías obtenida con K-Means.
 
 ### Resultados en el conjunto de prueba (2024–2025)
 
 | Métrica | Bosque aleatorio | Línea base: persistencia | Línea base: siempre normal |
 | --- | ---: | ---: | ---: |
-| F1 macro | **0,474** | 0,407 | 0,315 |
-| Exactitud balanceada | **0,522** | 0,407 | 0,333 |
-| F1 caída | 0,301 (precisión 0,268, exhaustividad 0,344) | **0,302** | 0 |
-| F1 aumento | **0,214** (3 de 9 detectados) | 0 | 0 |
-| ROC-AUC caída | **0,788** | — | — |
-| ROC-AUC alerta sin sentido (1 − P(normal)) | **0,729** | — | — |
+| F1 macro | **0,492** | 0,455 | 0,314 |
+| Exactitud balanceada | **0,560** | 0,457 | 0,333 |
+| F1 caída | **0,371** (precisión 0,277, exhaustividad 0,559) | 0,317 | 0 |
+| F1 aumento | **0,211** (14 de 52 detectados) | 0,132 | 0 |
+| ROC-AUC caída | **0,878** | — | — |
+| ROC-AUC alerta sin sentido (1 − P(normal)) | **0,787** | — | — |
 
-El modelo detecta el 43 % de las caídas severas y casi no confunde una caída con un aumento. Su uso recomendado es **priorizar**: si cada mes se revisa la especie con mayor riesgo de caída, la alerta es correcta en el 42 % de los casos, 4,5 veces más que al azar. Los aumentos, en cambio, casi no se pueden anticipar con estos datos.
+El modelo detecta el 74 % de las caídas extremas y supera a la persistencia en 2024 y en 2025. Su uso recomendado es **priorizar**: si cada mes se revisan las 2 o 3 especies con mayor riesgo de caída, se detecta entre el 29 % y el 41 % de las caídas con una precisión del 33–35 %, unas seis veces más que al azar. Los aumentos son la clase más difícil de anticipar.
 
 Las variables sugeridas por la cátedra se incorporaron y se evaluaron:
 
-- **Latitud y longitud de los puertos:** entran al modelo a través del reparto del desembarque por zona y de la concentración entre puertos.
-- **Clima y mareas:** la temperatura del mar, El Niño, el SAM, las mareas vivas y la iluminación lunar no se asocian con la clase y empeoran el modelo, así que se descartaron con esa evidencia (secciones 4.5, 7.6 y 7.7).
-- **Variables temporales:** el mes se trata como variable categórica, los rezagos y las ventanas terminan en el mes anterior y la partición es por años (secciones 5.2 y 5.3).
+- **Latitud y longitud de los puertos:** con las coordenadas se calcularon el centroide, el reparto por zona y la concentración en el puerto principal; ninguna aporta con esta etiqueta. Entra al modelo la cantidad de puertos de desembarque.
+- **Clima y mareas:** la temperatura del mar, El Niño, el SAM, las mareas vivas y la iluminación lunar tienen una relación nula o muy débil con la clase y no mejoran el modelo, así que se descartaron con esa evidencia (secciones 4.5, 4.9 y 6).
+- **Variables temporales:** el mes se trata como variable categórica y entra al modelo, los rezagos y las ventanas terminan en el mes anterior y la partición es por años (secciones 5.2 y 5.3).
 
 ### El EDA sigue el procedimiento de los cuadernos de la cátedra
 
@@ -86,7 +86,7 @@ Cada paso del procedimiento de los cuadernos tiene su sección en la notebook:
 
 Además se compararon cuatro esquemas de clasificación de anomalías (binario, tres clases, cinco clases por severidad y caídas según su mecanismo) y se explicitó qué error es más costoso. La notebook integra también el EDA de un integrante del grupo ([`entregas/eda/Grupo_Nro_12_EDA_v3.ipynb`](entregas/eda/Grupo_Nro_12_EDA_v3.ipynb)): análisis de categóricas con nombres normalizados, categorías «otros», alerta sin sentido, diccionario de variables con roles y exportación del dataset.
 
-El trabajo usa solo técnicas vistas en clase, salvo tres necesarias que se explican en recuadros con un ejemplo: `log1p`, el índice de Herfindahl-Hirschman y la mediana con MAD para construir la etiqueta. La sección 2 de la notebook responde, uno por uno, todos los comentarios de la cátedra. El detalle de los nueve cuadernos de la cátedra, dónde se aplicó cada uno y qué técnicas se reemplazaron está en [`docs/analisis_notebooks_catedra.md`](docs/analisis_notebooks_catedra.md).
+El trabajo usa **solo técnicas vistas en clase**: la etiqueta se construye con la mediana, el promedio, los cuartiles y la regla del diagrama de caja, sin transformaciones logarítmicas ni estadísticos robustos fuera del programa. La sección 2 de la notebook responde, uno por uno, todos los comentarios de la cátedra. El detalle de los nueve cuadernos de la cátedra, dónde se aplicó cada uno y qué técnicas se reemplazaron está en [`docs/analisis_notebooks_catedra.md`](docs/analisis_notebooks_catedra.md).
 
 ## Historial de entregas
 

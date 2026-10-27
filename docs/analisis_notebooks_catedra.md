@@ -43,7 +43,7 @@ Este documento resume los 9 cuadernos de ejemplo que compartió la cátedra (en 
 - **Partición.** Los cuadernos de iris, vinos y hongos usan `train_test_split` aleatorio. Nosotros usamos una partición por años, como el cuaderno de ventas, porque nuestros datos son series temporales y una partición aleatoria mezclaría el futuro con el pasado.
 - **Pruebas estadísticas.** Usamos las mismas pruebas que los cuadernos (ANOVA clásico, χ² y Pearson). Como las variables no son normales y la clase `aumento` es chica, las pruebas funcionan como filtro inicial, y la decisión final se verifica dentro del modelo con validación temporal (6).
 - **Separación de las clases.** En los ejemplos (iris, arroz, hongos) las clases se separan casi a simple vista y la exactitud llega al 97–100 %. En nuestro problema la proyección PCA muestra las anomalías mezcladas con los meses normales (4.9.1). Por eso el F1 macro esperable es moderado y la evaluación pone el foco en el uso práctico: la lista mensual de especies con mayor riesgo (9.4).
-- **Clases raras.** El cuaderno de vinos propone, como tarea, reducir el alcance a las clases frecuentes. Nosotros evaluamos cuatro esquemas de clases. Mantenemos las tres clases porque la clase más chica (53 aumentos) todavía se puede aprender, y la severidad, que daría clases demasiado chicas, se usa para evaluar y no como clase (4.7.2, 9.5).
+- **Clases raras.** El cuaderno de vinos propone, como tarea, reducir el alcance a las clases frecuentes. Nosotros evaluamos cuatro esquemas de clases. Mantenemos las tres clases porque todas tienen casos suficientes (216 aumentos, la más chica) y cada una lleva a una acción distinta. La severidad no cambia la acción, así que se usa para evaluar y no como clase (4.7.2, 9.5).
 
 ## 4. Para la defensa
 
@@ -52,8 +52,8 @@ Preguntas que pueden surgir a partir de los ejemplos de clase:
 - **¿Por qué no usaron `train_test_split`?** Porque mezcla meses futuros en el entrenamiento: es fuga de información, como muestra el cuaderno de ventas (4.8.2, 5.3).
 - **¿Por qué no escalaron las variables?** El bosque aleatorio divide por umbrales y no usa distancias. Sí se escala para K-Means y PCA (4.6, 4.9.1).
 - **¿Por qué no balancearon con SMOTE?** Porque interpola historias de especies distintas y crea combinaciones de rezagos imposibles. Se usan pesos de clase, el enfoque sensible al costo de la Unidad 6 (8.1).
-- **¿Por qué no usaron PCA como entrada del modelo?** Porque hacen falta 22 componentes para el 95 % de la varianza, y las componentes mezclan variables de distinto significado y le quitan interpretabilidad al modelo (4.9.1).
-- **¿Para qué sirvió K-Means?** Para ver si las especies forman tipos de pesquería. Apareció una división clara, entre 6 pesquerías de pulso y 37 continuas (Silhouette 0,52), y la variable resultante quedó en el modelo: quitarla baja el F1 macro de validación de 0,504 a 0,483 (4.6, 6).
+- **¿Por qué no usaron PCA como entrada del modelo?** Porque hacen falta 23 componentes para el 95 % de la varianza, y las componentes mezclan variables de distinto significado y le quitan interpretabilidad al modelo (4.9.1).
+- **¿Para qué sirvió K-Means?** Para ver si las especies forman tipos de pesquería. Apareció una división clara, entre 6 pesquerías de pulso y 37 continuas (Silhouette 0,58), y la variable resultante quedó en el modelo: quitarla baja el F1 macro de validación de 0,534 a 0,532 (4.6, 6).
 
 ## 5. Simplificación: solo técnicas vistas en clase
 
@@ -69,5 +69,8 @@ En la versión final se quitaron las técnicas que no se vieron en la asignatura
 | *Bootstrap* por bloques | Métricas por año de prueba (2024 y 2025) |
 | Importancia por permutación | Importancia del bosque aleatorio (`feature_importances_`) |
 | Prueba de permutación (auditoría del archivo abierto) | Persistencia de las series y contraste con las tablas oficiales |
+| `log1p` | Desembarque sin transformar, medido en proporción del nivel habitual de cada especie |
+| Mediana con MAD y puntaje *z* robusto | Regla del diagrama de caja (cuartiles y 1,5 × RIC) sobre los desvíos recientes |
+| Índice de Herfindahl-Hirschman | Proporción desembarcada en el puerto principal |
 
-Se mantienen tres técnicas no vistas, necesarias para el proyecto y explicadas en recuadros con un ejemplo: `log1p` (4.2.2), el índice de Herfindahl-Hirschman (4.4) y la mediana con MAD para construir la etiqueta (4.7.1). La autocorrelación se presenta como una correlación de Pearson entre la serie y su rezago (4.3), y la exactitud balanceada como el promedio de la exhaustividad de cada clase (9.1).
+Después se quitaron también las tres que quedaban: `log1p` (el desembarque ya no se transforma: cada mes se mide en proporción del nivel habitual de su especie), la mediana con MAD y el puntaje *z* robusto (la etiqueta usa ahora la regla del diagrama de caja sobre los cuartiles de los desvíos recientes) y el índice de Herfindahl-Hirschman (reemplazado por la proporción desembarcada en el puerto principal). El trabajo final usa solo técnicas vistas en clase. La autocorrelación se presenta como una correlación de Pearson entre la serie y su rezago (4.3), y la exactitud balanceada como el promedio de la exhaustividad de cada clase (9.1).
