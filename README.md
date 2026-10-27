@@ -15,9 +15,9 @@
 
 | Entregable | Archivo |
 | --- | --- |
-| **Notebook ejecutada** (EDA corregido, selección de variables, entrenamiento, evaluación y conclusiones) | [`Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb`](Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb) |
+| **Notebook ejecutada, versión 3** (EDA corregido, selección de variables, entrenamiento, evaluación y conclusiones) | [`Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb`](Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb) |
 | Abrir en Colab | [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ifbotech/APRENDIZAJE-AUTOM-TICO/blob/claude/festive-lamport-xe0jzs/Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb) |
-| Dataset de modelado | [`data/procesados/dataset_modelo.csv`](data/procesados/dataset_modelo.csv) |
+| Dataset de modelado | [`data/procesados/dataset_modelo.csv`](data/procesados/dataset_modelo.csv) · [descarga directa](https://raw.githubusercontent.com/ifbotech/APRENDIZAJE-AUTOM-TICO/claude/festive-lamport-xe0jzs/data/procesados/dataset_modelo.csv) |
 
 La notebook se entrega ya ejecutada. En Colab corre sin archivos previos: descarga cada fuente la primera vez, unos 3 minutos en total.
 
@@ -43,8 +43,10 @@ Por eso el modelo usa las estadísticas oficiales del mismo organismo.
 
 **Modelo.** Un único bosque aleatorio con 24 columnas elegidas en dos pasos, solo con técnicas vistas en clase:
 
-1. Pruebas por tipo de variable: ANOVA de un factor para las numéricas, χ² para las categóricas y correlación de Pearson para la redundancia.
-2. Eliminación hacia atrás por familias de variables, con validación temporal por años.
+1. **Filtro** (Unidad 1, dentro del EDA): ANOVA de un factor para las numéricas, χ² para las categóricas (con control de frecuencias esperadas) y correlación de Pearson para la redundancia.
+2. **Envoltura** (Unidad 1): eliminación hacia atrás por familias de variables, con validación temporal por años. Confirma las 24 columnas del filtro.
+
+El método **integrado** (importancia del bosque aleatorio) se usa para interpretar el modelo.
 
 Las variables del modelo son la historia de la especie, la historia de sus anomalías, la geografía y la flota (calculadas con la latitud y la longitud de los puertos), la clase del mes anterior y la tipología de pesquerías obtenida con K-Means.
 
@@ -65,7 +67,7 @@ Las variables sugeridas por la cátedra se incorporaron y se evaluaron:
 
 - **Latitud y longitud de los puertos:** entran al modelo a través del reparto del desembarque por zona y de la concentración entre puertos.
 - **Clima y mareas:** la temperatura del mar, El Niño, el SAM, las mareas vivas y la iluminación lunar no se asocian con la clase y empeoran el modelo, así que se descartaron con esa evidencia (secciones 4.5, 7.6 y 7.7).
-- **Variables temporales:** el mes se trata como variable categórica, los rezagos y las ventanas terminan en el mes anterior y la partición es por años (sección 5.2).
+- **Variables temporales:** el mes se trata como variable categórica, los rezagos y las ventanas terminan en el mes anterior y la partición es por años (secciones 5.2 y 5.3).
 
 ### El EDA sigue el procedimiento de los cuadernos de la cátedra
 
@@ -74,7 +76,8 @@ Cada paso del procedimiento de los cuadernos tiene su sección en la notebook:
 - inspección del panel (`shape`, `info`, `describe`, faltantes y duplicados);
 - análisis univariado de caja, histograma y densidad;
 - análisis de las variables categóricas: flotas, provincias, puertos y categorías «otros»;
-- análisis bivariado contra la clase: cajas, histogramas y densidades por clase, gráficos de pares;
+- **construcción de la variable objetivo dentro del EDA** (4.7), como pidió la cátedra;
+- análisis de la dependencia con la variable objetivo (4.9): cajas, histogramas y densidades por clase, gráficos de pares;
 - correlaciones;
 - ANOVA y χ²;
 - decisión sobre los valores atípicos;
@@ -83,7 +86,7 @@ Cada paso del procedimiento de los cuadernos tiene su sección en la notebook:
 
 Además se compararon cuatro esquemas de clasificación de anomalías (binario, tres clases, cinco clases por severidad y caídas según su mecanismo) y se explicitó qué error es más costoso. La notebook integra también el EDA de un integrante del grupo ([`entregas/eda/Grupo_Nro_12_EDA_v3.ipynb`](entregas/eda/Grupo_Nro_12_EDA_v3.ipynb)): análisis de categóricas con nombres normalizados, categorías «otros», alerta sin sentido, diccionario de variables con roles y exportación del dataset.
 
-El trabajo usa solo técnicas vistas en clase. La única excepción es la mediana con MAD para construir la etiqueta, que se explica en un recuadro. El detalle de los nueve cuadernos de la cátedra, dónde se aplicó cada uno y qué técnicas se reemplazaron está en [`docs/analisis_notebooks_catedra.md`](docs/analisis_notebooks_catedra.md).
+El trabajo usa solo técnicas vistas en clase, salvo tres necesarias que se explican en recuadros con un ejemplo: `log1p`, el índice de Herfindahl-Hirschman y la mediana con MAD para construir la etiqueta. La sección 2 de la notebook responde, uno por uno, todos los comentarios de la cátedra. El detalle de los nueve cuadernos de la cátedra, dónde se aplicó cada uno y qué técnicas se reemplazaron está en [`docs/analisis_notebooks_catedra.md`](docs/analisis_notebooks_catedra.md).
 
 ## Historial de entregas
 

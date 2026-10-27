@@ -8,7 +8,7 @@ Todos los archivos de esta carpeta los descarga o los genera la notebook `Grupo_
 | `oficial/` | 65 tablas HTML, una por año (2014–2026) y tipo de cruce: `especie_mes`, `especie_puerto`, `especie_flota`, `puerto_mes` y `flota_mes`, en toneladas | [Estadísticas de desembarques de la Subsecretaría de Pesca y Acuicultura](https://www.magyp.gob.ar/sitio/areas/pesca_maritima/desembarques/) | Base del modelo |
 | `externos/` | `sst_oisst_zonas_mensual.csv`: temperatura superficial del mar media mensual en tres zonas de la plataforma; `oni.txt`: Índice Oceánico El Niño; `sam_aao.txt`: Modo Anular del Sur | NOAA OISST v2.1 (vía ERDDAP) y NOAA Climate Prediction Center | Variables climáticas (4.5, 7) |
 | `referencias/` | `coordenadas_puertos.csv`: tabla de la entrega inicial (archivo 2019); `coordenadas_puertos_completas.csv`: 22 puertos con zona y fuente de la coordenada | Conjunto abierto y OpenStreetMap (Nominatim) | Variables geográficas (4.4) |
-| `procesados/` | `dataset_modelo.csv`: una fila por especie y mes (43 especies, 2017–2025) con la etiqueta y las 41 variables candidatas | Generado por la notebook (sección 8) | Dataset final |
+| `procesados/` | `dataset_modelo.csv`: una fila por especie y mes (43 especies, 2017–2025) con la etiqueta y las 41 variables candidatas | Generado por la notebook (sección 7) | Dataset final |
 
 ## `procesados/dataset_modelo.csv`
 
@@ -16,7 +16,7 @@ Todos los archivos de esta carpeta los descarga o los genera la notebook `Grupo_
 | --- | --- |
 | Identificación | `especie`, `categoria`, `fecha`, `anio`, `mes` |
 | Objetivo y su construcción | `captura_t`, `y` = log1p(captura_t), `esperado`, `residuo`, `escala`, `z`, `clase` (`caida` / `normal` / `aumento`), `clase_cod` (−1 / 0 / 1) |
-| Variables candidatas | ver la tabla de la sección 7.1 de la notebook; el modelo usa 24 columnas (diccionario de la sección 8, con el rol de cada variable) |
+| Variables candidatas | ver la tabla de la sección 4.8.1 de la notebook; el modelo usa 24 columnas (diccionario de la sección 7, con el rol de cada variable) |
 
 Todas las variables candidatas usan solo información disponible hasta el mes anterior.
 
