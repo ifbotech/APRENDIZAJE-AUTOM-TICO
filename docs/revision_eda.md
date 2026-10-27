@@ -1,6 +1,6 @@
 # Revisión del EDA del grupo
 
-**Notebook revisado:** `Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb` (commit `70a645f`).
+**Notebook revisado:** `Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb` (commit `70a645f`; archivado en [`entregas/eda/Grupo_Nro_12_EDA_v2.ipynb`](../entregas/eda/Grupo_Nro_12_EDA_v2.ipynb)).
 
 **Cómo se hizo:** leí las 50 celdas, sus salidas y los 12 gráficos guardados. No pude volver a ejecutar el notebook, porque este entorno no puede descargar el CSV 2010–2018 del portal. Por eso, las pruebas de código se hicieron sobre el archivo 2019 y sobre una réplica sintética del flujo del notebook. Todo el código del anexo está probado.
 

@@ -1,43 +1,46 @@
 # Datos
 
-Desembarques de pesca marítima por puerto, flota y especie publicados por el Ministerio de Agricultura, Ganadería y Pesca en su portal de datos abiertos.
+Todos los archivos de esta carpeta los descarga o los genera la notebook `Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb`. Si un archivo ya existe, se usa esa copia; si no, se descarga de la fuente original. Los archivos descargados no se editan: la limpieza se hace por código.
 
-- Conjunto de datos: <https://datos.magyp.gob.ar/dataset/http-www-magyp-gob-ar-sitio-areas-pesca-maritima-desembarques>
-- Recurso principal (2010–2018): <https://datos.magyp.gob.ar/dataset/http-www-magyp-gob-ar-sitio-areas-pesca-maritima-desembarques/archivo/77a15b4a-71e1-4b81-9732-ae0b6863c8cc>
+| Carpeta | Contenido | Fuente | Uso en la notebook |
+| --- | --- | --- | --- |
+| `raw/` | `captura-puerto-flota-2010-2018.csv` y `captura-puerto-flota-2019.csv`: desembarques por mes, flota, puerto y especie, en kg | [Datos abiertos MAGyP](https://datos.magyp.gob.ar/dataset/e2f12522-4dea-495e-877a-b6d2737ae6bf) | Auditoría de calidad (4.1) y coordenadas de los puertos (4.4) |
+| `oficial/` | 65 tablas HTML, una por año (2014–2026) y tipo de cruce: `especie_mes`, `especie_puerto`, `especie_flota`, `puerto_mes` y `flota_mes`, en toneladas | [Estadísticas de desembarques de la Subsecretaría de Pesca y Acuicultura](https://www.magyp.gob.ar/sitio/areas/pesca_maritima/desembarques/) | Base del modelo |
+| `externos/` | `sst_oisst_zonas_mensual.csv`: temperatura superficial del mar media mensual en tres zonas de la plataforma; `oni.txt`: Índice Oceánico El Niño; `sam_aao.txt`: Modo Anular del Sur | NOAA OISST v2.1 (vía ERDDAP) y NOAA Climate Prediction Center | Variables climáticas (4.5, 7) |
+| `referencias/` | `coordenadas_puertos.csv`: tabla de la entrega inicial (archivo 2019); `coordenadas_puertos_completas.csv`: 22 puertos con zona y fuente de la coordenada | Conjunto abierto y OpenStreetMap (Nominatim) | Variables geográficas (4.4) |
+| `procesados/` | `dataset_modelo.csv`: una fila por especie y mes (43 especies, 2017–2025) con la etiqueta y las 39 variables candidatas | Generado por la notebook (sección 8) | Dataset final |
 
-## Archivos en `raw/`
+## `procesados/dataset_modelo.csv`
 
-| Archivo | Contenido | Estado |
-| --- | --- | --- |
-| `captura-puerto-flota-2019.csv` | Desembarques de enero a noviembre de 2019 (3.040 filas, 13 columnas) | Copia sin modificar del archivo publicado |
-| Archivo 2010–2018 | Desembarques de enero 2010 a diciembre 2018 (aprox. 41.340 filas, 13 columnas) | A descargar del recurso principal y guardar en esta carpeta |
+| Grupo de columnas | Columnas |
+| --- | --- |
+| Identificación | `especie`, `categoria`, `fecha`, `anio`, `mes` |
+| Objetivo y su construcción | `captura_t`, `y` = log1p(captura_t), `esperado`, `residuo`, `escala`, `z`, `clase` (`caida` / `normal` / `aumento`), `clase_cod` (−1 / 0 / 1) |
+| Variables candidatas | ver la tabla de la sección 7.1 de la notebook; el modelo usa 18 (Tabla 16) |
 
-Los archivos en `raw/` no se editan: la limpieza se hace por código y los resultados van a otra carpeta.
+Todas las variables candidatas usan solo información disponible hasta el mes anterior.
 
-## Tabla de coordenadas en `referencias/`
+## Cómo leer el conjunto abierto
 
-`referencias/coordenadas_puertos.csv` tiene una fila por puerto con su latitud, longitud y la fuente del dato. La arma `src/coordenadas.py` a partir de las coordenadas que ya trae el dataset (cada puerto tiene siempre el mismo par):
-
-```bash
-python src/coordenadas.py data/raw/captura-puerto-flota-2019.csv [otro.csv ...]
-```
-
-Si un puerto real queda sin coordenadas, se buscan a mano (por ejemplo en Google Maps u OpenStreetMap) y se anotan en la tabla con la fuente en la columna `fuente`. Al volver a correr el script, esos valores se conservan. «otros puertos Buenos Aires» queda en blanco porque agrupa varios puertos y no tiene una ubicación única.
-
-## Cómo leer los CSV
-
-- Codificación: el archivo 2019 está en **Latin-1 (ISO-8859-1)** con fin de línea CRLF. Leído como UTF-8, los acentos se rompen.
-- `provincia_id` y `departamento_id` tienen ceros a la izquierda (`06`, `06357`): hay que leerlos como texto.
+- Codificación **Latin-1 (ISO-8859-1)**. Leído como UTF-8, los acentos se rompen.
+- `provincia_id` y `departamento_id` tienen ceros a la izquierda: hay que leerlos como texto.
 - `captura` está en kilogramos.
 
 ```python
 import pandas as pd
 
-df = pd.read_csv(
-    "data/raw/captura-puerto-flota-2019.csv",
-    encoding="latin-1",
-    dtype={"provincia_id": str, "departamento_id": str},
-)
+df = pd.read_csv("data/raw/captura-puerto-flota-2019.csv", encoding="latin-1",
+                 dtype={"provincia_id": str, "departamento_id": str})
 ```
 
-`src/perfilado.py` detecta la codificación sola (prueba UTF-8 y después Latin-1).
+## Cómo leer las tablas oficiales
+
+Las tablas usan formato numérico argentino (punto de miles y coma decimal). El título está en las primeras filas, los encabezados en la fila 5 y debajo vienen bloques por categoría (Peces, Crustáceos, Moluscos) con subtotales. La notebook las convierte a formato largo con las funciones `especie_mes`, `cruce_anual` y `filas_simples` (sección 3).
+
+```python
+import io
+import pandas as pd
+
+html = open("data/oficial/especie_mes_2025.html", encoding="utf-8", errors="replace").read()
+tabla = pd.read_html(io.StringIO(html), thousands=".", decimal=",")[0]
+```
