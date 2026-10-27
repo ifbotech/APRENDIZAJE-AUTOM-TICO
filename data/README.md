@@ -16,7 +16,7 @@ Todos los archivos de esta carpeta los descarga o los genera la notebook `Grupo_
 | --- | --- |
 | Identificación | `especie`, `categoria`, `fecha`, `anio`, `mes` |
 | Objetivo y su construcción | `captura_t`, `y` = log1p(captura_t), `esperado`, `residuo`, `escala`, `z`, `clase` (`caida` / `normal` / `aumento`), `clase_cod` (−1 / 0 / 1) |
-| Variables candidatas | ver la tabla de la sección 7.1 de la notebook; el modelo usa 18 (diccionario de la sección 8) |
+| Variables candidatas | ver la tabla de la sección 7.1 de la notebook; el modelo usa 12 (diccionario de la sección 8) |
 
 Todas las variables candidatas usan solo información disponible hasta el mes anterior.
 
