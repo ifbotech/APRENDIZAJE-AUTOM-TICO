@@ -59,7 +59,24 @@ Por eso el modelo usa las estadísticas oficiales del mismo organismo.
 
 El modelo supera a la regla de persistencia en el 99,2 % de las réplicas *bootstrap*. Su uso recomendado es **priorizar**: si cada mes se revisa la especie con mayor riesgo de caída, la alerta es correcta en el 42 % de los casos, 4,5 veces más que al azar.
 
-Las variables climáticas y geográficas sugeridas por la cátedra se incorporaron y se evaluaron. No mejoraron el modelo, así que se descartaron con esa evidencia (secciones 7.3 y 7.4).
+Las variables sugeridas por la cátedra se incorporaron y se evaluaron: clima, geografía y mareas, estas últimas con el calendario lunar. También una tipología de pesquerías hecha con K-Means. Ninguna mejoró el modelo, así que se descartaron con esa evidencia (secciones 4.5, 4.6, 7.6 y 7.7).
+
+### El EDA sigue el procedimiento de los cuadernos de la cátedra
+
+Cada paso del procedimiento de los cuadernos tiene su sección en la notebook:
+
+- inspección del panel;
+- análisis univariado de caja, histograma y densidad;
+- análisis bivariado contra la clase;
+- correlaciones;
+- ANOVA y χ²;
+- decisión sobre los valores atípicos;
+- control explícito de fuga de información con `assert`;
+- PCA y K-Means.
+
+Además se compararon cuatro esquemas de clasificación de anomalías (binario, tres clases, cinco clases por severidad y caídas según su mecanismo) y se explicitó qué error es más costoso.
+
+El detalle de los ocho cuadernos y dónde se aplicó cada uno está en [`docs/analisis_notebooks_catedra.md`](docs/analisis_notebooks_catedra.md).
 
 ## Historial de entregas
 
@@ -83,7 +100,8 @@ Las variables climáticas y geográficas sugeridas por la cátedra se incorporar
 │   ├── referencias/              # coordenadas de los puertos
 │   └── procesados/dataset_modelo.csv
 ├── entregas/eda/                 # notebook del EDA presentada anteriormente
-├── docs/                         # entrega inicial, recomendaciones y revisión del EDA
+├── docs/                         # entrega inicial, recomendaciones, revisión del EDA y análisis de los cuadernos de la cátedra
+│   └── material_catedra/         # cuadernos de ejemplo y apuntes de las unidades 3, 4 y 6
 ├── reports/                      # perfilado del archivo 2019
 ├── src/                          # scripts de perfilado, coordenadas y PDF de la entrega inicial
 └── requirements.txt
