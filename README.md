@@ -42,7 +42,7 @@ La notebook se entrega ya ejecutada. En Colab corre sin archivos previos: descar
 
 Por eso el modelo usa las estadísticas oficiales del mismo organismo.
 
-**Modelo.** Un único bosque aleatorio con 18 variables elegidas en dos pasos:
+**Modelo.** Un único bosque aleatorio con 12 variables elegidas en dos pasos:
 
 1. Pruebas por tipo de variable: ANOVA de Welch, Kruskal-Wallis, χ² con V de Cramér, corrección de Holm y redundancia por correlación de Pearson.
 2. Verificación dentro del modelo con validación temporal por años.
@@ -51,13 +51,13 @@ Por eso el modelo usa las estadísticas oficiales del mismo organismo.
 
 | Métrica | Bosque aleatorio | Regla: persistencia | Regla: siempre normal |
 | --- | ---: | ---: | ---: |
-| F1 macro | **0,496** (IC 95 %: 0,430–0,549) | 0,407 | 0,315 |
-| Exactitud balanceada | **0,557** | 0,407 | 0,333 |
-| F1 caída | 0,303 | 0,302 | 0 |
-| F1 aumento | **0,276** | 0 | 0 |
-| PR-AUC caída (azar = 0,093) | **0,300** | — | — |
+| F1 macro | **0,464** (IC 95 %: 0,411–0,522) | 0,407 | 0,315 |
+| Exactitud balanceada | **0,503** | 0,407 | 0,333 |
+| F1 caída | **0,350** (precisión 0,314, exhaustividad 0,396) | 0,302 | 0 |
+| F1 aumento | **0,133** (2 de 9 detectados) | 0 | 0 |
+| PR-AUC caída (azar = 0,093) | **0,292** | — | — |
 
-El modelo supera a la regla de persistencia en el 99,2 % de las réplicas *bootstrap*. Su uso recomendado es **priorizar**: si cada mes se revisa la especie con mayor riesgo de caída, la alerta es correcta en el 42 % de los casos, 4,5 veces más que al azar.
+El modelo supera a la regla de persistencia en el 99,0 % de las réplicas *bootstrap*. Detecta el 52 % de las caídas severas. Su uso recomendado es **priorizar**: si cada mes se revisa la especie con mayor riesgo de caída, la alerta es correcta en el 38 % de los casos, cuatro veces más que al azar. Los aumentos, en cambio, casi no se pueden anticipar con estos datos.
 
 Las variables sugeridas por la cátedra se incorporaron y se evaluaron: clima, geografía y mareas, estas últimas con el calendario lunar. También una tipología de pesquerías hecha con K-Means. Ninguna mejoró el modelo, así que se descartaron con esa evidencia (secciones 4.5, 4.6, 7.6 y 7.7).
 
