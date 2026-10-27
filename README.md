@@ -34,49 +34,56 @@ La notebook se entrega ya ejecutada. En Colab corre sin archivos previos: descar
 - **Índices climáticos:** ONI y SAM, de NOAA CPC.
 - **Coordenadas de los puertos.**
 
-**Cambio de fuente.** En el EDA se comprobó que el conjunto de datos abierto propuesto en la entrega inicial tiene los kilos desacoplados de la especie, el puerto y la flota de cada registro. Lo muestran tres pruebas (sección 4.1 de la notebook):
+**Cambio de fuente.** En el EDA se comprobó que el conjunto de datos abierto propuesto en la entrega inicial tiene los kilos desacoplados de la especie, el puerto y la flota de cada registro. Lo muestran dos pruebas (sección 4.1 de la notebook):
 
-- una prueba de permutación;
 - la persistencia de las series;
 - el contraste con las tablas oficiales.
 
 Por eso el modelo usa las estadísticas oficiales del mismo organismo.
 
-**Modelo.** Un único bosque aleatorio con 12 variables elegidas en dos pasos:
+**Modelo.** Un único bosque aleatorio con 24 columnas elegidas en dos pasos, solo con técnicas vistas en clase:
 
-1. Pruebas por tipo de variable: ANOVA de Welch, Kruskal-Wallis, χ² con V de Cramér, corrección de Holm y redundancia por correlación de Pearson.
-2. Verificación dentro del modelo con validación temporal por años.
+1. Pruebas por tipo de variable: ANOVA de un factor para las numéricas, χ² para las categóricas y correlación de Pearson para la redundancia.
+2. Eliminación hacia atrás por familias de variables, con validación temporal por años.
+
+Las variables del modelo son la historia de la especie, la historia de sus anomalías, la geografía y la flota (calculadas con la latitud y la longitud de los puertos), la clase del mes anterior y la tipología de pesquerías obtenida con K-Means.
 
 ### Resultados en el conjunto de prueba (2024–2025)
 
-| Métrica | Bosque aleatorio | Regla: persistencia | Regla: siempre normal |
+| Métrica | Bosque aleatorio | Línea base: persistencia | Línea base: siempre normal |
 | --- | ---: | ---: | ---: |
-| F1 macro | **0,464** (IC 95 %: 0,411–0,522) | 0,407 | 0,315 |
-| Exactitud balanceada | **0,503** | 0,407 | 0,333 |
-| F1 caída | **0,350** (precisión 0,314, exhaustividad 0,396) | 0,302 | 0 |
-| F1 aumento | **0,133** (2 de 9 detectados) | 0 | 0 |
-| PR-AUC caída (azar = 0,093) | **0,292** | — | — |
+| F1 macro | **0,474** | 0,407 | 0,315 |
+| Exactitud balanceada | **0,522** | 0,407 | 0,333 |
+| F1 caída | 0,301 (precisión 0,268, exhaustividad 0,344) | **0,302** | 0 |
+| F1 aumento | **0,214** (3 de 9 detectados) | 0 | 0 |
+| ROC-AUC caída | **0,788** | — | — |
+| ROC-AUC alerta sin sentido (1 − P(normal)) | **0,729** | — | — |
 
-El modelo supera a la regla de persistencia en el 99,0 % de las réplicas *bootstrap*. Detecta el 52 % de las caídas severas. Su uso recomendado es **priorizar**: si cada mes se revisa la especie con mayor riesgo de caída, la alerta es correcta en el 38 % de los casos, cuatro veces más que al azar. Los aumentos, en cambio, casi no se pueden anticipar con estos datos.
+El modelo detecta el 43 % de las caídas severas y casi no confunde una caída con un aumento. Su uso recomendado es **priorizar**: si cada mes se revisa la especie con mayor riesgo de caída, la alerta es correcta en el 42 % de los casos, 4,5 veces más que al azar. Los aumentos, en cambio, casi no se pueden anticipar con estos datos.
 
-Las variables sugeridas por la cátedra se incorporaron y se evaluaron: clima, geografía y mareas, estas últimas con el calendario lunar. También una tipología de pesquerías hecha con K-Means. Ninguna mejoró el modelo, así que se descartaron con esa evidencia (secciones 4.5, 4.6, 7.6 y 7.7).
+Las variables sugeridas por la cátedra se incorporaron y se evaluaron:
+
+- **Latitud y longitud de los puertos:** entran al modelo a través del reparto del desembarque por zona y de la concentración entre puertos.
+- **Clima y mareas:** la temperatura del mar, El Niño, el SAM, las mareas vivas y la iluminación lunar no se asocian con la clase y empeoran el modelo, así que se descartaron con esa evidencia (secciones 4.5, 7.6 y 7.7).
+- **Variables temporales:** el mes se trata como variable categórica, los rezagos y las ventanas terminan en el mes anterior y la partición es por años (sección 5.2).
 
 ### El EDA sigue el procedimiento de los cuadernos de la cátedra
 
 Cada paso del procedimiento de los cuadernos tiene su sección en la notebook:
 
-- inspección del panel;
+- inspección del panel (`shape`, `info`, `describe`, faltantes y duplicados);
 - análisis univariado de caja, histograma y densidad;
-- análisis bivariado contra la clase;
+- análisis de las variables categóricas: flotas, provincias, puertos y categorías «otros»;
+- análisis bivariado contra la clase: cajas, histogramas y densidades por clase, gráficos de pares;
 - correlaciones;
 - ANOVA y χ²;
 - decisión sobre los valores atípicos;
 - control explícito de fuga de información con `assert`;
 - PCA y K-Means.
 
-Además se compararon cuatro esquemas de clasificación de anomalías (binario, tres clases, cinco clases por severidad y caídas según su mecanismo) y se explicitó qué error es más costoso.
+Además se compararon cuatro esquemas de clasificación de anomalías (binario, tres clases, cinco clases por severidad y caídas según su mecanismo) y se explicitó qué error es más costoso. La notebook integra también el EDA de un integrante del grupo ([`entregas/eda/Grupo_Nro_12_EDA_v3.ipynb`](entregas/eda/Grupo_Nro_12_EDA_v3.ipynb)): análisis de categóricas con nombres normalizados, categorías «otros», alerta sin sentido, diccionario de variables con roles y exportación del dataset.
 
-El detalle de los ocho cuadernos y dónde se aplicó cada uno está en [`docs/analisis_notebooks_catedra.md`](docs/analisis_notebooks_catedra.md).
+El trabajo usa solo técnicas vistas en clase. La única excepción es la mediana con MAD para construir la etiqueta, que se explica en un recuadro. El detalle de los nueve cuadernos de la cátedra, dónde se aplicó cada uno y qué técnicas se reemplazaron está en [`docs/analisis_notebooks_catedra.md`](docs/analisis_notebooks_catedra.md).
 
 ## Historial de entregas
 
@@ -85,6 +92,7 @@ El detalle de los ocho cuadernos y dónde se aplicó cada uno está en [`docs/an
 | Entrega inicial (24/09/2026) | [PDF](docs/entrega_inicial/Entrega_Inicial_Grupo12.pdf) · [diapositivas](docs/entrega_inicial/Presentacion_Entrega_Inicial_Grupo12.pdf) · [propuesta editable](docs/propuesta_proyecto.md) · [guía para la defensa](docs/entrega_inicial/guia.md) |
 | Devolución y plan del EDA | [`docs/recomendaciones_y_plan_eda.md`](docs/recomendaciones_y_plan_eda.md) |
 | EDA del grupo (versión revisada por la cátedra) | [`entregas/eda/Grupo_Nro_12_EDA_v2.ipynb`](entregas/eda/Grupo_Nro_12_EDA_v2.ipynb) · [revisión](docs/revision_eda.md) |
+| EDA de un integrante (integrado a la notebook final) | [`entregas/eda/Grupo_Nro_12_EDA_v3.ipynb`](entregas/eda/Grupo_Nro_12_EDA_v3.ipynb) |
 | Perfilado del archivo 2019 | [`reports/perfilado_captura-puerto-flota-2019.md`](reports/perfilado_captura-puerto-flota-2019.md) |
 
 ## Estructura del repositorio
@@ -99,7 +107,7 @@ El detalle de los ocho cuadernos y dónde se aplicó cada uno está en [`docs/an
 │   ├── externos/                 # temperatura del mar por zona, ONI y SAM
 │   ├── referencias/              # coordenadas de los puertos
 │   └── procesados/dataset_modelo.csv
-├── entregas/eda/                 # notebook del EDA presentada anteriormente
+├── entregas/eda/                 # notebooks del EDA presentadas anteriormente
 ├── docs/                         # entrega inicial, recomendaciones, revisión del EDA y análisis de los cuadernos de la cátedra
 │   └── material_catedra/         # cuadernos de ejemplo y apuntes de las unidades 3, 4 y 6
 ├── reports/                      # perfilado del archivo 2019
@@ -119,6 +127,6 @@ La notebook usa los archivos de `data/` si existen y, si no, los descarga de las
 ## Pautas del TP a tener presentes
 
 - Grupos de 4 a 5 integrantes. En la defensa final tienen que estar todos.
-- No se aceptan comparativas de modelos ni datasets académicos o totalmente sintéticos. El trabajo usa **un solo modelo**; la persistencia y "siempre normal" son reglas de referencia sin aprendizaje.
+- No se aceptan comparativas de modelos ni datasets académicos o totalmente sintéticos. El trabajo usa **un solo modelo**; la persistencia y "siempre normal" son líneas base sin aprendizaje.
 - El trabajo debe ser inédito.
 - La IA generativa solo se permite para código y material de presentación. Las decisiones, su justificación, el análisis de resultados y las conclusiones tienen que ser del grupo.
