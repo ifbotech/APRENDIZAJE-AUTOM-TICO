@@ -53,7 +53,7 @@ Preguntas que pueden surgir a partir de los ejemplos de clase:
 - **¿Por qué no escalaron las variables?** El bosque aleatorio divide por umbrales y no usa distancias. Sí se escala para K-Means y PCA (4.6, 4.9.1).
 - **¿Por qué no balancearon con SMOTE?** Porque interpola historias de especies distintas y crea combinaciones de rezagos imposibles. Se usan pesos de clase, el enfoque sensible al costo de la Unidad 6 (8.1).
 - **¿Por qué no usaron PCA como entrada del modelo?** Porque hacen falta 23 componentes para el 95 % de la varianza, y las componentes mezclan variables de distinto significado y le quitan interpretabilidad al modelo (4.9.1).
-- **¿Para qué sirvió K-Means?** Para ver si las especies forman tipos de pesquería. Apareció una división clara, entre 6 pesquerías de pulso y 37 continuas (Silhouette 0,58), y la variable resultante quedó en el modelo: quitarla baja el F1 macro de validación de 0,534 a 0,532 (4.6, 6).
+- **¿Para qué sirvió K-Means?** Para ver si las especies forman tipos de pesquería. Apareció una división clara, entre 6 pesquerías de pulso y 37 continuas (Silhouette 0,58), y la variable resultante quedó en el modelo: quitarla baja el F1 macro de validación de 0,533 a 0,528 (4.6, 6).
 
 ## 5. Simplificación: solo técnicas vistas en clase
 

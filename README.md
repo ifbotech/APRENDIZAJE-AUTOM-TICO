@@ -15,7 +15,7 @@
 
 | Entregable | Archivo |
 | --- | --- |
-| **Notebook ejecutada, versión 3** (EDA corregido, selección de variables, entrenamiento, evaluación y conclusiones) | [`Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb`](Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb) |
+| **Notebook ejecutada, versión 5.5** (EDA corregido, selección de variables, entrenamiento, evaluación y conclusiones) | [`Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb`](Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb) |
 | Abrir en Colab | [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ifbotech/APRENDIZAJE-AUTOM-TICO/blob/claude/festive-lamport-xe0jzs/Grupo_Nro_12_Tema_Deteccion_Anomalias_Capturas_Pesqueras.ipynb) |
 | Dataset de modelado | [`data/procesados/dataset_modelo.csv`](data/procesados/dataset_modelo.csv) · [descarga directa](https://raw.githubusercontent.com/ifbotech/APRENDIZAJE-AUTOM-TICO/claude/festive-lamport-xe0jzs/data/procesados/dataset_modelo.csv) |
 
@@ -54,14 +54,16 @@ Las variables del modelo son la historia de la especie, la historia de sus anoma
 
 | Métrica | Bosque aleatorio | Línea base: persistencia | Línea base: siempre normal |
 | --- | ---: | ---: | ---: |
-| F1 macro | **0,492** | 0,455 | 0,314 |
-| Exactitud balanceada | **0,560** | 0,457 | 0,333 |
-| F1 caída | **0,371** (precisión 0,277, exhaustividad 0,559) | 0,317 | 0 |
-| F1 aumento | **0,211** (14 de 52 detectados) | 0,132 | 0 |
-| ROC-AUC caída | **0,878** | — | — |
-| ROC-AUC alerta sin sentido (1 − P(normal)) | **0,787** | — | — |
+| F1 macro | **0,484** | 0,455 | 0,314 |
+| Exactitud balanceada | **0,548** | 0,457 | 0,333 |
+| F1 caída | **0,362** (precisión 0,271, exhaustividad 0,542) | 0,317 | 0 |
+| F1 aumento | **0,195** (13 de 52 detectados) | 0,132 | 0 |
+| ROC-AUC caída | **0,879** | — | — |
+| ROC-AUC alerta sin sentido (1 − P(normal)) | **0,788** | — | — |
 
-El modelo detecta el 74 % de las caídas extremas y supera a la persistencia en 2024 y en 2025. Su uso recomendado es **priorizar**: si cada mes se revisan las 2 o 3 especies con mayor riesgo de caída, se detecta entre el 29 % y el 41 % de las caídas con una precisión del 33–35 %, unas seis veces más que al azar. Los aumentos son la clase más difícil de anticipar.
+El modelo detecta el 70 % de las caídas extremas y supera a la persistencia en 2024 y en 2025. Su uso recomendado es **priorizar**: si cada mes se revisan las 2 o 3 especies con mayor riesgo de caída, se detecta entre el 29 % y el 42 % de las caídas con una precisión del 35 %, unas seis veces más que al azar. Los aumentos son la clase más difícil de anticipar.
+
+Las cifras corresponden a la ejecución entregada (pandas 2.2.3, scikit-learn 1.6.1). Con otras versiones pueden variar en el segundo o tercer decimal.
 
 Las variables sugeridas por la cátedra se incorporaron y se evaluaron:
 
